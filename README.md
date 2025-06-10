@@ -1,276 +1,268 @@
-# Historify - Modern Stock Data Management Dashboard
+# Historify - FastAPI + Next.js
 
-Historify is a professional-grade web application for downloading, managing, and visualizing historical stock market data. Built with a modern, intuitive admin dashboard interface, it provides comprehensive tools for bulk data operations, real-time monitoring, and advanced charting capabilities.
+A modern stock historical data management application built with FastAPI backend and Next.js frontend.
 
-![Historify Architecture](historify/app/static/image/historify.png)
+## 🏗️ Architecture
 
-## 🚀 Key Features
+- **Backend**: FastAPI with SQLAlchemy ORM and SQLite database
+- **Frontend**: Next.js with React and Tailwind CSS + DaisyUI
+- **API**: RESTful API with automatic OpenAPI documentation
+- **Database**: SQLite with dynamic table creation for symbol-exchange-interval combinations
+- **Scheduler**: APScheduler for automated data downloads
+- **Charts**: TradingView Lightweight Charts integration
 
-### Modern Dashboard Interface
-- **Professional Design System**: Clean, modern UI inspired by Stripe, Vercel, and Supabase dashboards
-- **Dark/Light Mode**: Seamless theme switching with persistent preferences
-- **Responsive Layout**: Fully responsive design that works on desktop and mobile devices
-- **Command Palette**: Quick access to all features with keyboard shortcuts (Cmd/Ctrl + K)
+## 📦 Project Structure
 
-### Data Management
-- **Bulk Symbol Import**: 
-  - CSV and Excel file support with drag-and-drop interface
-  - Paste data directly from clipboard
-  - Manual entry with auto-complete
-  - Real-time validation and duplicate detection
-  - Exchange auto-detection with manual override
+```
+├── backend/                 # FastAPI backend
+│   ├── app/
+│   │   ├── main.py         # FastAPI application entry point
+│   │   ├── core/           # Core configuration
+│   │   ├── database/       # Database setup and connection
+│   │   ├── models/         # SQLAlchemy models and Pydantic schemas
+│   │   ├── routes/         # API route handlers
+│   │   └── utils/          # Utility functions (data fetcher, scheduler)
+│   ├── requirements.txt    # Python dependencies
+│   └── .env.example       # Environment variables template
+├── frontend/               # Next.js frontend
+│   ├── components/         # React components
+│   ├── pages/             # Next.js pages
+│   ├── styles/            # Global styles
+│   ├── package.json       # Node.js dependencies
+│   └── next.config.js     # Next.js configuration
+└── README.md              # This file
+```
 
-- **Bulk Data Export**:
-  - Multiple export formats (Individual CSV, Combined CSV, ZIP archives)
-  - Custom date range selection with presets
-  - Configurable intervals (1m, 5m, 15m, 30m, 1h, daily)
-  - Background processing for large exports
-  - Export queue management with progress tracking
+## 🚀 Quick Start
 
-- **Bulk Download**:
-  - One-click download for entire watchlist
-  - Smart scheduling with API rate limit respect
-  - Resume capability for interrupted downloads
-  - Parallel processing with thread pool management
-  - Real-time progress tracking with ETA
+### Prerequisites
 
-### Advanced Features
-- **Multiple Exchange Support**: NSE, BSE, NFO, MCX, CDS and more
-- **Dynamic Watchlist**: Real-time quotes with auto-refresh
-- **TradingView Charts**: Professional-grade charting with technical indicators
-- **Technical Indicators**: EMA, RSI with customizable parameters
-- **Incremental Updates**: Checkpoint system for efficient data updates
-- **Data Quality Monitoring**: Track data completeness and quality metrics
+- Python 3.8+
+- Node.js 16+
+- npm or yarn
 
-### Scheduler Manager
-- **Automated Data Downloads**: Schedule downloads at specific times in IST
-- **Flexible Scheduling Options**:
-  - Daily schedules at specific times
-  - Interval-based schedules (every N minutes)
-  - Pre-configured market close (3:35 PM IST) and pre-market (8:30 AM IST) schedules
-- **Job Management**: Pause, resume, delete, or run jobs immediately
-- **Background Processing**: Non-blocking scheduled downloads
-- **Watchlist Integration**: Automatically download all watchlist symbols
-- **Custom Symbol Selection**: Schedule downloads for specific symbols
+### Backend Setup
 
-## 📦 Installation
-
-1. **Clone the repository**:
+1. **Navigate to backend directory:**
    ```bash
-   git clone https://github.com/marketcalls/historify.git
-   cd historify/historify
+   cd backend
    ```
 
-2. **Create virtual environment**:
+2. **Create virtual environment:**
    ```bash
    python -m venv venv
    source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. **Install dependencies**:
+3. **Install dependencies:**
    ```bash
    pip install -r requirements.txt
    ```
-   
-   **Note**: The scheduler feature requires APScheduler which is included in requirements.txt
 
-4. **Configure environment**:
+4. **Configure environment:**
    ```bash
-   cp .env.sample .env
+   cp .env.example .env
    # Edit .env with your API keys and settings
    ```
 
-5. **Run the application**:
+5. **Run the FastAPI server:**
    ```bash
-   python run.py
+   python app/main.py
    ```
 
-6. **Access the dashboard**:
-   Open `http://localhost:5001` in your browser
+   The API will be available at `http://localhost:5001`
+   - API Documentation: `http://localhost:5001/docs`
+   - Alternative docs: `http://localhost:5001/redoc`
 
-## 🏗️ Project Structure
+### Frontend Setup
 
-```
-historify/
-├── app/
-│   ├── models/          # Database models
-│   ├── routes/          # API and page routes
-│   ├── static/
-│   │   ├── css/         # Stylesheets and design system
-│   │   ├── js/          # JavaScript modules
-│   │   └── image/       # Static images
-│   ├── templates/       # Jinja2 templates
-│   └── utils/           # Utility functions
-├── instance/            # Instance-specific data
-├── requirements.txt     # Python dependencies
-└── run.py              # Application entry point
-```
+1. **Navigate to frontend directory:**
+   ```bash
+   cd frontend
+   ```
 
-## 🎨 Design System
+2. **Install dependencies:**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-The application features a comprehensive design system with:
+3. **Run the development server:**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
 
-- **Color Palette**: Semantic colors for success, warning, error, and info states
-- **Typography**: Inter font family with clear hierarchy
-- **Components**: Reusable buttons, cards, tables, modals, and form elements
-- **Animations**: Smooth transitions and loading states
-- **Icons**: FontAwesome integration for consistent iconography
-
-## 🔌 API Endpoints
-
-### Data Management
-- `POST /api/download` - Download historical data
-- `POST /api/import-symbols` - Import symbols to watchlist
-- `POST /api/export` - Export data in various formats
-- `GET /api/export/queue` - Check export queue status
-- `GET /api/export/download/<export_id>` - Download exported CSV file
-
-### Watchlist
-- `GET /api/symbols` - Get available symbols
-- `GET /api/quotes` - Fetch real-time quotes
-- `GET /watchlist/items` - Manage watchlist
-
-### Charts
-- `GET /charts/api/chart-data/<symbol>/<exchange>/<interval>/<ema>/<rsi>` - Chart data with indicators
-
-### Scheduler
-- `GET /api/scheduler/jobs` - Get all scheduled jobs
-- `POST /api/scheduler/jobs` - Create a new scheduled job
-- `DELETE /api/scheduler/jobs/<job_id>` - Delete a scheduled job
-- `POST /api/scheduler/jobs/<job_id>/pause` - Pause a scheduled job
-- `POST /api/scheduler/jobs/<job_id>/resume` - Resume a paused job
-- `POST /api/scheduler/jobs/<job_id>/run` - Run a job immediately
-- `POST /api/scheduler/test` - Create a test job
-
-## 💻 Technology Stack
-
-- **Backend**: Flask, SQLAlchemy, SQLite, APScheduler
-- **Frontend**: 
-  - Tailwind CSS + DaisyUI for styling
-  - TradingView Lightweight Charts 5.0.0
-  - Vanilla JavaScript with modern ES6+
-- **Data Processing**: Pandas, NumPy for technical analysis
-- **API Integration**: OpenAlgo API for market data
-- **Task Scheduling**: APScheduler with IST timezone support
+   The frontend will be available at `http://localhost:3000`
 
 ## 🔧 Configuration
 
-### Environment Variables (.env)
+### Backend Environment Variables (.env)
+
 ```env
-# API Configuration
-OPENALGO_API_KEY=your_api_key_here
-OPENALGO_API_URL=http://127.0.0.1:5000
+# FastAPI Configuration
+API_HOST=0.0.0.0
+API_PORT=5001
+DEBUG=True
+SECRET_KEY=your_secret_key_here
 
 # Database
-DATABASE_URI=sqlite:///historify.db
+DATABASE_URL=sqlite:///./historify.db
 
-# App Settings
-SECRET_KEY=your_secret_key_here
-DEBUG=False
+# OpenAlgo API
+OPENALGO_API_KEY=your_openalgo_api_key
+OPENALGO_API_HOST=http://127.0.0.1:5000
+
+# CORS
+CORS_ORIGINS=["http://localhost:3000", "http://127.0.0.1:3000"]
 ```
 
 ### OpenAlgo Integration
+
 Add to your OpenAlgo `.env`:
 ```env
-CORS_ALLOWED_ORIGINS = 'http://127.0.0.1:5000,http://127.0.0.1:5001'
+CORS_ALLOWED_ORIGINS = 'http://127.0.0.1:5000,http://127.0.0.1:5001,http://localhost:3000'
 ```
 
-## 📊 Usage Guide
+## 📊 Features
 
-### Importing Symbols
-1. Navigate to Import page from sidebar
-2. Choose import method:
-   - **File Upload**: Drag & drop CSV/Excel files
-   - **Paste Data**: Copy/paste from spreadsheets
-   - **Manual Entry**: Type symbols with auto-complete
-3. Map columns and validate data
-4. Review validation results
-5. Import valid symbols
+### Data Management
+- **Bulk Symbol Import**: CSV/Excel file support with drag-and-drop
+- **Bulk Data Export**: Multiple formats (CSV, ZIP archives)
+- **Bulk Download**: One-click download for entire watchlist
+- **Real-time Quotes**: Live market data with auto-refresh
 
-### Exporting Data
-1. Go to Export page
-2. Select symbols (use search/filters)
-3. Choose date range and interval
-4. Select export format
-5. Configure options (headers, metadata)
-6. Start export (background processing for large datasets)
+### Advanced Features
+- **Multiple Exchange Support**: NSE, BSE, NFO, MCX, CDS
+- **Dynamic Watchlist**: Real-time quotes with persistent storage
+- **TradingView Charts**: Professional-grade charting with technical indicators
+- **Scheduler Manager**: Automated data downloads at specific times
+- **Technical Indicators**: EMA, RSI with customizable parameters
 
-### Bulk Download
-1. Access Download page
-2. Select symbols or use watchlist
-3. Configure intervals and date ranges
-4. Choose download mode (fresh/continue)
-5. Monitor real-time progress
-6. Handle failures with automatic retry
+### Modern UI/UX
+- **Responsive Design**: Works on desktop and mobile
+- **Dark/Light Mode**: Theme switching with persistent preferences
+- **Toast Notifications**: Real-time feedback for user actions
+- **Loading States**: Smooth loading indicators and skeleton screens
+- **Modern Components**: Built with Tailwind CSS and DaisyUI
 
-### Scheduler Configuration
-1. Navigate to Scheduler page from sidebar
-2. Quick setup options:
-   - **Market Close Download**: Automatically download at 3:35 PM IST
-   - **Pre-Market Download**: Download before market opens at 8:30 AM IST
-   - **Test Scheduler**: Run a test job in 10 seconds
-3. Custom schedules:
-   - **Daily Schedule**: Set specific time in IST
-   - **Interval Schedule**: Run every N minutes
-   - Configure data interval (1m, 5m, 15m, daily, etc.)
-   - Select all watchlist symbols or specific symbols
-4. Manage jobs:
-   - View next run time and status
-   - Pause/resume jobs as needed
-   - Run jobs immediately
-   - Delete unwanted schedules
+## 🛠️ API Endpoints
 
-## 🚦 Performance Optimizations
+### Core API Routes
 
-- **Batch Processing**: Symbols processed in configurable batches
-- **Rate Limiting**: Respects API rate limits (10 symbols/second)
-- **Database Optimization**: Dynamic table creation per symbol-interval
-- **Lazy Loading**: Virtual scrolling for large datasets
-- **Background Jobs**: Queue system for long-running operations
-- **Efficient Export**: Streams CSV data directly without loading entire dataset in memory
-- **Scheduled Downloads**: Non-blocking background processing for automated downloads
+- `GET /api/symbols` - Get available symbols
+- `POST /api/download` - Download historical data
+- `GET /api/quotes` - Get real-time quotes
+- `GET /api/data` - Get OHLCV data for charts
 
-## 🛡️ Security Features
+### Watchlist Management
 
-- **Input Validation**: Comprehensive validation for all user inputs
-- **Session Management**: Secure session handling for export operations
-- **Environment Variables**: Sensitive data in .env files
-- **SQL Injection Prevention**: SQLAlchemy ORM queries
-- **XSS Protection**: Template auto-escaping
-- **Safe Dynamic Table Creation**: Sanitized table names for symbol-interval combinations
+- `GET /api/watchlist/items` - Get watchlist items
+- `POST /api/watchlist/items` - Add symbol to watchlist
+- `DELETE /api/watchlist/items/{id}` - Remove symbol from watchlist
+
+### Charts & Visualization
+
+- `GET /api/charts/chart-data/{symbol}/{exchange}/{interval}/{ema}/{rsi}` - Chart data with indicators
+- `GET /api/charts/timeframes` - Available timeframes
+
+### Scheduler
+
+- `GET /api/scheduler/jobs` - Get scheduled jobs
+- `POST /api/scheduler/jobs` - Create scheduled job
+- `DELETE /api/scheduler/jobs/{id}` - Delete scheduled job
+- `POST /api/scheduler/jobs/{id}/pause` - Pause job
+- `POST /api/scheduler/jobs/{id}/resume` - Resume job
+
+### Settings
+
+- `GET /api/settings` - Get application settings
+- `POST /api/settings` - Update settings
+- `POST /api/settings/test-api` - Test API connection
+
+## 🔄 Development Workflow
+
+### Running Both Services
+
+1. **Terminal 1 - Backend:**
+   ```bash
+   cd backend
+   source venv/bin/activate
+   python app/main.py
+   ```
+
+2. **Terminal 2 - Frontend:**
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+
+### Building for Production
+
+**Backend:**
+```bash
+cd backend
+pip install -r requirements.txt
+python app/main.py
+```
+
+**Frontend:**
+```bash
+cd frontend
+npm run build
+npm start
+```
+
+## 🧪 Testing
+
+### Backend Testing
+```bash
+cd backend
+pytest
+```
+
+### Frontend Testing
+```bash
+cd frontend
+npm run test
+```
+
+## 📝 Database Schema
+
+The application uses SQLite with the following main tables:
+
+- `watchlist` - User's watchlist symbols
+- `stock_data` - Historical OHLCV data
+- `app_settings` - Application configuration
+- `scheduler_jobs` - Scheduled download jobs
+- Dynamic tables for symbol-exchange-interval combinations
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please:
-
 1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## 🐛 Known Issues & Fixes
+## 📄 License
 
-### Data Export
-- **Fixed**: Export was returning only 1 record with incorrect dates
-- **Solution**: Implemented proper database querying and CSV generation from dynamic tables
-
-### Recent Updates
-- **v1.2.0**: Added Scheduler Manager for automated downloads
-- **v1.1.5**: Fixed data export functionality with proper date handling
-- **v1.1.0**: Upgraded to TradingView Charts 5.0.0
-
-## 📝 License
-
-This project is licensed under the AGPLv3 License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
-- TradingView for the excellent charting library
+- FastAPI for the excellent Python web framework
+- Next.js for the React framework
+- TradingView for the charting library
 - OpenAlgo for market data API
-- APScheduler for robust task scheduling
-- The Flask and SQLAlchemy communities
+- Tailwind CSS and DaisyUI for the UI components
 
 ## 📞 Support
 
-For issues and feature requests, please use the [GitHub issue tracker](https://github.com/marketcalls/historify/issues).
+For issues and feature requests, please use the GitHub issue tracker.
+
+---
+
+**Note**: This is a conversion of the original Flask/Jinja2 application to a modern FastAPI + Next.js stack while maintaining all original functionality and improving the developer experience.
