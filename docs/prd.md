@@ -240,3 +240,6 @@ Responsive grid systems
 Professional color schemes
 Consistent spacing and typography
 The conversion preserves all the original functionality while providing a modern, scalable architecture that's easier to maintain and extend. Both services can be developed independently while working together seamlessly!
+
+cd backend && python -m venv venv
+cd frontend && npm install
