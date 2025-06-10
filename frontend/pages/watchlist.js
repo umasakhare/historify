@@ -158,7 +158,7 @@ export default function Watchlist() {
                 <tbody>
                   {watchlistItems.length === 0 ? (
                     <tr>
-                      <td colSpan="6" className="text-center py-8">
+                      <td colSpan="6\" className="text-center py-8">
                         <div>
                           <p className="text-base-content/60 mb-3">Your watchlist is empty</p>
                           <button 
